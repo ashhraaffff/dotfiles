@@ -76,14 +76,13 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 # Aliases
-alias ls='ls --color'
+alias ls='exa -lah'
 alias vim='nvim'
 alias c='clear'
 alias open='/usr/bin/xdg-open'
 alias gedit='/usr/bin/gnome-text-editor'
 alias cat='/usr/bin/bat'
 alias tmux='tmux -u'
-alias ls='/usr/bin/exa'
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
