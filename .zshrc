@@ -79,9 +79,9 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 alias ls='exa -lah'
 alias vim='nvim'
 alias c='clear'
-alias open='/usr/bin/xdg-open'
-alias gedit='/usr/bin/gnome-text-editor'
-alias cat='/usr/bin/bat'
+alias open='xdg-open'
+alias gedit='gnome-text-editor'
+alias cat='bat'
 alias tmux='tmux -u'
 # Shell integrations
 eval "$(fzf --zsh)"
