@@ -1,4 +1,4 @@
-	# Edit this configuration file to define what should be installed on
+# Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
@@ -11,10 +11,14 @@
     ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable = false;
+  boot.loader.grub.enable = true;
+  boot.loader.grub.efiSupport = true;
+  boot.loader.grub.useOSProber = true; # Detect other operating systems
+  boot.loader.grub.device = "nodev"; # Use EFI for booting
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "ashrafpc"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -84,7 +88,7 @@
     shell = pkgs.zsh;
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
-      thunderbird
+    #  thunderbird
     ];
   };
 
@@ -115,7 +119,10 @@
    figlet
    fzf
    vimPlugins.fzfWrapper
-   
+   bison
+   byacc
+   flex
+
 
    # Modern CLI Alternatives
    bat            # Better cat
@@ -158,6 +165,7 @@
    nix-direnv
    shellcheck
    delta          # Better git diff
+   obsidian
    
    # Data Processing
    jq             # JSON processor
@@ -175,6 +183,13 @@
    
    # -- Python
    python3
+   jupyter
+   python3Packages.pip
+   python3Packages.virtualenv
+   python312Packages.numpy
+   python312Packages.pandas 
+   python312Packages.matplotlib
+   python312Packages.scikit-learn
    
    # -- Java
    jdk17
@@ -187,10 +202,11 @@
    eog            # Image viewer
 
    # GNOME Extensions
-   gnomeExtensions.dock-from-dash
+   # install dash to dock from the browse menu, couldn't find it in nixpkgs
+   gnomeExtensions.dash-to-dock
    gnomeExtensions.appindicator
    gnomeExtensions.search-light
-   gnomeExtensions.bluetooth-battery
+   gnomeExtensions.bluetooth-battery-meter
    gnomeExtensions.blur-my-shell
    gnomeExtensions.caffeine
    gnomeExtensions.clipboard-history
@@ -201,14 +217,18 @@
    gnomeExtensions.removable-drive-menu
    gnomeExtensions.steal-my-focus-window
    gnomeExtensions.tophat
-   gnomeExtensions.transparent-top-bar
+   
+   #vscode extensions 
+   vscode-extensions.ms-vscode.cpptools-extension-pack
+   
 
    # Media and Graphics
    vlc            # Media player
    spotify        # Music streaming
    gimp           # Image editor
    libreoffice-still 
-
+   imagemagick
+   
    # Fonts
    (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
 
@@ -216,15 +236,14 @@
    lsof           # List open files
   ];
   
-# Also add this section to enable Zsh system-wide
-programs.zsh = {
-  enable = true;
-  ohMyZsh.enable = true;
-};
-
-fonts.packages = with pkgs; [
-  (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
-];
+  programs.zsh = {
+   enable = true;
+   ohMyZsh.enable = true;
+  };
+  
+  fonts.packages = with pkgs; [
+   (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
+   ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -238,6 +257,39 @@ fonts.packages = with pkgs; [
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  powerManagement.enable = true;
+  services.thermald.enable = true;
+  services.power-profiles-daemon.enable = false;  # Add this line
+  services.auto-cpufreq.enable = true;
+  services.auto-cpufreq.settings = {
+    battery = {
+       governor = "powersave";
+       turbo = "never";
+    };
+    charger = {
+       governor = "performance";
+       turbo = "auto";
+    };
+  };
+  #services.tlp = {
+    #enable = true;
+    #settings = {
+        #CPU_SCALING_GOVERNOR_ON_AC = "performance";
+        #CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+
+        #CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+        #CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+
+        #CPU_MIN_PERF_ON_AC = 0;
+        #CPU_MAX_PERF_ON_AC = 100;
+        #CPU_MIN_PERF_ON_BAT = 0;
+        #CPU_MAX_PERF_ON_BAT = 20;
+
+        #Optional helps save long term battery health
+        #START_CHARGE_THRESH_BAT0 = 40; # 40 and below it starts to charge
+        #STOP_CHARGE_THRESH_BAT0 = 90; # 80 and above it stops charging
+    #};
+  #};
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -252,8 +304,8 @@ fonts.packages = with pkgs; [
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # Did you read the comment?
-
-
-
+  
+  
   nix.settings.experimental-features = ["nix-command" "flakes"];
+
 }
