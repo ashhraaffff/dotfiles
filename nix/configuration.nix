@@ -105,8 +105,8 @@
    vim
    neovim
    emacs
-   vscode
    sublime
+
 
    # Terminal and Shell
    kitty          # Terminal emulator
@@ -123,7 +123,8 @@
    byacc
    flex
    powertop
-   
+   tldr 
+
    #system 
    xorg.xf86inputsynaptics
    libinput
@@ -207,6 +208,9 @@
    jdk17
    gradle
    
+   #rust
+   cargo
+   rustc
 
    # GNOME Desktop Environment
    gnome-tweaks
@@ -230,7 +234,8 @@
    gnomeExtensions.steal-my-focus-window
    gnomeExtensions.tophat
    
-   #vscode extensions 
+   #vscode extensions
+   vscode-fhs 
    vscode-extensions.ms-vscode.cpptools-extension-pack
    
 
@@ -247,16 +252,18 @@
 
    # System Monitoring and Debugging
    lsof           # List open files
+   
 
-
-   #Virtualisation
-   virtualbox
+   #random 
+   putty
+   dosbox
+   gdb
+   nasm 
+   graphviz
+   ani-cli  
   ];
 
 
-  #virtualisation
-  virtualisation.virtualbox.host.enable = true;
-  users.extraGroups.vboxusers.members = [ "ashraf" ];
   
   programs.zsh = {
    enable = true;
