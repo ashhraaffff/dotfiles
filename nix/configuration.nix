@@ -261,10 +261,19 @@
    nasm 
    graphviz
    ani-cli  
+   timeshift
+   pika-backup
+   borgbackup
+   busybox
+   mariadb
+   
   ];
 
-
   
+  boot.extraModprobeConfig = ''
+    options usbcore autosuspend=-1
+  '';
+    
   programs.zsh = {
    enable = true;
    ohMyZsh.enable = true;
@@ -283,11 +292,14 @@
   # };
 
   # List services that you want to enable:
+  
+  # for docker uncomment the next line 
+  #virtualisation.docker.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   powerManagement.enable = true;
-  powerManagement.powertop.enable = true;
+  powerManagement.powertop.enable = false;
   services.system76-scheduler.settings.cfsProfiles.enable = true;
 
   services.thermald.enable = true;
@@ -320,6 +332,11 @@
         #Optional helps save long term battery health
         START_CHARGE_THRESH_BAT0 = 30; # 40 and below it starts to charge
         STOP_CHARGE_THRESH_BAT0 = 90; # 80 and above it stops charging
+
+        # Add these new USB settings
+        USB_AUTOSUSPEND = 0;
+        USB_DENYLIST = "046d:c53f";  #mouse device id
+        USB_EXCLUDE_AUDIO = 1;
     };
   };
 
